@@ -762,42 +762,23 @@ function twentytwenty_get_elements_array() {
 // Routing
 function myapi_pick_ceil( WP_REST_Request $request ){
 
-	$posts = get_posts( array(
-		'author' => (int) $request['id'],
-	) );
-
-	if ( empty( $posts ) )
-		return new WP_Error( 'no_author_posts', 'Записей не найдено', [ 'status' => 404 ] );
-
-	return $posts;
-
-	// $attempts = document.getElementById("attempts");
-	// $keyId = e.currentTarget.dataset.id;
 	$random = rand(0, 100);
-	echo $random;
 
-	// e.target.setAttribute("disabled", "disabled");
-
-// 	if (this.numberAttempts === 0){
-// 		 return false;
-// 	}
 	if($random >= 66){
-		 echo "Вы получите случайный подарок";
+		$message = "Вы получите случайный подарок";
 	}
 	if($random >= 33 && $random < 66){
-		echo "Попробуйте еще раз";
+		$message = "Попробуйте еще раз";
  }
 	if($random < 33){
-		echo "Ход был не удачен";
+		$message = "Ход был не удачен";
 	}
 	$return = array(
-		'message' => 'Сохранено',
-		'ID' => 1
+		'message' => $message,
 	);
 	
 	wp_send_json( $return );
 }
-
 
 add_action( 'rest_api_init', function(){
 
