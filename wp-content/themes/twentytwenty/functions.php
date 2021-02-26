@@ -766,15 +766,19 @@ function myapi_pick_ceil( WP_REST_Request $request ){
 
 	if($random >= 66){
 		$message = "Вы получите случайный подарок";
+		$num = 1;
 	}
 	if($random >= 33 && $random < 66){
 		$message = "Попробуйте еще раз";
+		$num = 2;
  }
 	if($random < 33){
 		$message = "Ход был не удачен";
+		$num = 3;
 	}
 	$return = array(
 		'message' => $message,
+		'num' => $num,
 	);
 	
 	wp_send_json( $return );
