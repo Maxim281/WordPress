@@ -760,27 +760,39 @@ function twentytwenty_get_elements_array() {
 }
 
 // Routing
-function myapi_pick_ceil( WP_REST_Request $request ){
 
+function myapi_pick_ceil( WP_REST_Request $request ) {
+	global $wpdb;
+	$cell_number=25;
+	$user_id=1;
+	$selected_date >= date("Y-m-d 00:00:00");
 	$random = rand(0, 100);
 
 	if($random >= 66){
 		$message = "Вы получите случайный подарок";
-		$num = 1;
+		$type_prize = 1;
 	}
 	if($random >= 33 && $random < 66){
 		$message = "Попробуйте еще раз";
-		$num = 2;
- }
+		$type_prize = 2;
+	}
 	if($random < 33){
 		$message = "Ход был не удачен";
-		$num = 3;
+		$type_prize = 3;
 	}
-	$return = array(
-		'message' => $message,
-		'num' => $num,
-	);
+
+	$result = $wpdb->get_results ("SELECT user_id, selected_date, type_prize FROM `gameminer` WHERE user_id = 1 AND selected_date >= $selected_date AND type_prize = 1 AND type_prize = 3");
+	$result = $wpdb->get_results ("SELECT user_id, selected_date, type_prize FROM `gameminer` WHERE user_id = 1 AND selected_date >= $selected_date AND type_prize = 2");
 	
+	$wpdb->query( $table="INSERT INTO `gameminer` (`cell_number`, `user_id`, `selected_date`, `type_prize`) VALUES ('$cell_number', '$user_id', '$selected_date', '$type_prize')" );
+	
+	
+	
+	$return = array(
+		'message'   => $message,
+		'type_prize' => $type_prize,
+		'result' => $result,
+	);
 	wp_send_json( $return );
 }
 
@@ -792,4 +804,4 @@ add_action( 'rest_api_init', function(){
 	] );
 
 } );
-
+	
