@@ -760,75 +760,10 @@ function twentytwenty_get_elements_array() {
 }
 
 // Routing
-
-// function myapi_pick_ceil( WP_REST_Request $request ) {
-// 	global $wpdb;
-// 	$cell_number=25;
-// 	$user_id=1;
-// 	$selected_date >= date("Y-m-d 00:00:00");
-// 	$random = rand(0, 100);
-
-// 	if($random >= 66){
-// 		$message = "Вы получите случайный подарок";
-// 		$type_prize = 1;
-// 	}
-// 	if($random >= 33 && $random < 66){
-// 		$message = "Попробуйте еще раз";
-// 		$type_prize = 2;
-// 	}
-// 	if($random < 33){
-// 		$message = "Ход был не удачен";
-// 		$type_prize = 3;
-// 	}
-
-// 	$result = $wpdb->get_results ("SELECT user_id, selected_date, type_prize FROM `gameminer` WHERE user_id = 1 AND selected_date >= $selected_date AND (type_prize = 1 OR type_prize = 3)");
-// 	$result = $wpdb->get_results ("SELECT user_id, selected_date, type_prize FROM `gameminer` WHERE user_id = 1 AND selected_date >= $selected_date AND type_prize = 2");
-	
-// 	$result1 = $wpdb->query("INSERT INTO `gameminer` (cell_number, user_id, selected_date, type_prize) VALUES ('$cell_number', '$user_id', '$selected_date', '$type_prize')" );
-	
-	
-	
-// 	$return = array(
-// 		'message'   => $message,
-// 		'type_prize' => $type_prize,
-// 		'result1' => $result1,
-// 		'result' => $result,
-// 	);
-// 	wp_send_json( $return );
-// }
-
-// add_action( 'rest_api_init', function(){
-
-// 	register_rest_route( 'myapi/v1', '/game/Mines/', [
-// 		'methods'  => 'GET',
-// 		'callback' => 'myapi_pick_ceil',
-// 	] );
-
-// } );
 	
 
 function myapi_pick_ceil( WP_REST_Request $request ){
-	
 	global $wpdb;
-	// $wpdb->insert( 'wpru_gameminer', ['type_prize' => $num], [ '%d' ] );
-	// $result=$wpdb->insert( 
-	// 	$wpdb->prefix . 'wp_wpru_gameminer',
-	// 	array(
-	// 		'type_prize' => $num,
-	// 		'cell_number'=> '',
-	// 		'user_id'=>'',
-	// 		'selected_date'=>'',
-	// 		'id'=>[],
-	// 	) 
-	// 	echo $result;
-	// );
-	// $wpdb->get_var('query',$column_offset = 5, $row_offset = 1);
-// 	$result = $wpdb->get_var("SELECT type_prize FROM gameminer WHERE type_prize = $num ");
- 
-//    // Echo the user's email address
-//    echo $result;
-
-// http://wp.ru/wp-json/myapi/v1/game/Mines/
 
 	date_default_timezone_set('Europe/Samara');
 	echo $selected_date = date('Y-m-d H:i:s');
