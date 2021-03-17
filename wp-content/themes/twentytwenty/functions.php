@@ -762,47 +762,138 @@ function twentytwenty_get_elements_array() {
 // Routing
 	
 
+// function myapi_pick_ceil( WP_REST_Request $request ) {
+// 	global $wpdb;
+// 	$cell_number=rand(1,25);
+// 	$user_id=1;
+// 	$selected_date=date("Y-m-d 00:00:00");
+// 	$type_prize=0;
+
+// 	$result = $wpdb->get_results ("SELECT selected_date, cell_number FROM `gameminer` WHERE cell_number between 1 and 25 AND selected_date > date('Y-m-d 00:00:00') AND type_prize!=2");
+
+// 	print_r ($result);
+
+// 	if ( $result ) {
+// 		foreach ($result as $selected_date ) {
+// 			echo $selected_date;
+// 		} foreach ($result as $cell_number ) {
+// 			echo $cell_number;
+// 		}
+// 	}
+
+// 	$random = rand(1,10);
+// 	$rcount=count($result);
+
+// 	if ($rcount >= 3) {
+// 		$return = array (
+// 			'message' => "YOU LOSER",
+// 			'type_prize' => 3
+// 		);
+
+// 		return wp_send_json( $return );
+// 	}
+
+// 	if ($random >= 4 && $random < 8) {
+// 		$result = "Вы выиграли!";
+// 		$type_prize=1;
+// 	}
+
+// 	else if ($random >= 8 && $random < 10) {
+// 		$result = "Вы получили дополнительную попытку!";
+// 		$type_prize=2;
+// 	}
+
+// 	else {
+// 		$result = "Вы проиграли.";
+// 		$type_prize=3;
+// 	}
+
+// 	$table="INSERT INTO `gameminer` (`cell_number`, `user_id`, `selected_date`, `type_prize`) VALUES ('$cell_number', '$user_id', '$selected_date', '$type_prize')";
+// 	$wpdb->query( $table );
+// 	var_dump($table);
+// 	$return = array(
+// 		'message'   => $result,
+// 		'type_prize' => $type_prize,
+// 	);
+
+// 	wp_send_json( $return );
+// }
+
+// add_action( 'rest_api_init', function(){
+
+// 	register_rest_route( 'myapi/v1', '/game/Mines/', [
+// 		'methods'  => 'GET',
+// 		'callback' => 'myapi_pick_ceil',
+// 	] );
+
+// } );
+
+//______________________________________________________________________________________________________________________________________
+
 function myapi_pick_ceil( WP_REST_Request $request ){
-	global $wpdb;
-
-	date_default_timezone_set('Europe/Samara');
-	echo $selected_date = date('Y-m-d H:i:s');
-	$cell_number=1;
-	$user_id=1;
-
-    $rand = rand (1, 99);
-			
-	if(1<= $a && $a <=33){
-		$message="Вы выиграли попробуйте еще раз";
-		$type_prize = 1;
-	}
-	else if(34<= $a && $a <= 66){
-		$message="Вы получите случайный подарок";
-		$type_prize = 2;
-	}
-	else{
-		$message="Вы проиграли";
-		$type_prize = 3;
-	}
-          
-		  $return = array(
-			'result' => $message
-		);
-
-	$message = $wpdb->get_results ("SELECT selected_date, cell_number FROM `gameminer` WHERE cell_number between 1 and 25 AND selected_date 'LIMIT 25");
-
-	$wpdb->query( $table="INSERT INTO `gameminer` (`cell_number`, `user_id`, `selected_date`, `type_prize`) VALUES ( '$user_id', '$cell_number', '$selected_date', '$type_prize' )");
-	echo $table;
-		
 	
-		wp_send_json( $return );
+	global $wpdb;
+// http://wp.ru/wp-json/myapi/v1/game/Mines/
+
+$selected_date=date("Y-m-d 00:00:00");
+$cell_number=1;
+$user_id=1;
+$type_prize=0;	
+$n = 99;
+$a = mt_rand (1,$n);
+
+$result = $wpdb->get_results ("SELECT selected_date, cell_number FROM `gameminer` WHERE cell_number between 1 and 25 AND selected_date > date('Y-m-d 00:00:00') AND type_prize != 2");
+var_dump ($result);
+
+$rcount = count($result);
+
+if($rcount >= 3) {
+    $return = array(
+        'MESSAGE' => "YOU LOSER",
+        'type_prize' => 3
+        );
+   return wp_send_json( $return );
 }
 
+
+
+if(1<= $a && $a <=33){
+	$result="Вы выиграли попробуйте еще раз";
+	$type_prize = 1;
+	
+}
+else if(34<= $a && $a <= 66){
+	$result="Вы получите случайный подарок";
+	$type_prize = 2;
+}
+else{
+	$result="Вы проиграли";
+	$type_prize = 3;
+}
+
+
+$return = array(
+	'result'   => $type_prize,
+	'MESSAGE'  => $result
+);
+
+
+$wpdb->query("INSERT INTO `gameminer` ( `user_id`,`cell_number`, `selected_date`, `type_prize`) 
+VALUES ( '$user_id','$cell_number', '$selected_date', '$type_prize')" );
+
+
+$return = array(
+	'result'   => $type_prize,
+	'MESSAGE'  => $result
+);
+
+wp_send_json( $return );
+}
 add_action( 'rest_api_init', function(){
 
-	register_rest_route( 'myapi/v1', '/game/Mines/', [
-		'methods'  => 'GET',
-		'callback' => 'myapi_pick_ceil',
-	] );
+register_rest_route( 'myapi/v1', '/game/Mines/', [
+	'methods'  => 'GET',
+	'callback' => 'myapi_pick_ceil',
+] );
 
-	});
+} );
