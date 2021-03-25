@@ -775,23 +775,22 @@ function myapi_pick_ceil( WP_REST_Request $request ) {
 	$random = rand(1,100);
 	$rcount=count($result);
 
-	if ($rcount >= 3) {
+	if ($rcount >=3) {
 		$return = array (
 			'message' => "YOU LOSER",
 			'type_prize' => 3
 		);
-
 		return wp_send_json( $return );
 	}
 
 	if ($random >= 34 && $random < 66) {
 		$result = "Вы выиграли!";
-		$type_prize=1;
+		$type_prize=2;
 	}
 
-	else if ($random >= 66 && $random < 100) {
+	else if ($random >= 66) {
 		$result = "Вы получили дополнительную попытку!";
-		$type_prize=2;
+		$type_prize=1;
 	}
 
 	else {
@@ -813,7 +812,7 @@ function myapi_pick_ceil( WP_REST_Request $request ) {
 add_action( 'rest_api_init', function(){
 
 	register_rest_route( 'myapi/v1', '/game/Mines/', [
-		'methods'  => 'GET',
+		'methods'  => 'POST',
 		'callback' => 'myapi_pick_ceil',
 	] );
 
