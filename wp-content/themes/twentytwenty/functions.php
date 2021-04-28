@@ -764,13 +764,12 @@ function twentytwenty_get_elements_array() {
 
 function myapi_pick_ceil( WP_REST_Request $request ) {
 	global $wpdb;
-	$cell_number=rand(1,25);
-	$user_id=1;
+	$cell_number = $request['ceil_number'];
+	$user_id = $request['user_id'];
 	$selected_date=date("Y-m-d 00:00:00");
 
 	$result = $wpdb->get_results ("SELECT selected_date, cell_number FROM `gameminer` WHERE cell_number between 1 and 25 AND selected_date > date('Y-m-d 00:00:00') AND type_prize!=2");
 
-	print_r ($result);
 
 	$random = rand(1,100);
 	$rcount=count($result);
@@ -800,7 +799,6 @@ function myapi_pick_ceil( WP_REST_Request $request ) {
 
 	$table="INSERT INTO `gameminer` (`cell_number`, `user_id`, `selected_date`, `type_prize`) VALUES ('$cell_number', '$user_id', '$selected_date', '$type_prize')";
 	$wpdb->query( $table );
-	var_dump($table);
 	$return = array(
 		'message'   => $result,
 		'type_prize' => $type_prize,
