@@ -759,16 +759,22 @@ function twentytwenty_get_elements_array() {
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
 
+function add_cors_http_header(){
+	header("Access-Control-Allow-Origin: *");
+}
+add_action('init','add_cors_http_header');
+
 // Routing
 	
 
 function myapi_pick_ceil( WP_REST_Request $request ) {
 	global $wpdb;
-	$cell_number = $request['ceil_number'];
+	$cell_number = $request['cell_number'];
 	$user_id = $request['user_id'];
 	$selected_date=date("Y-m-d 00:00:00");
+	$type_prize = 0;
 
-	$result = $wpdb->get_results ("SELECT selected_date, cell_number FROM `gameminer` WHERE cell_number between 1 and 25 AND selected_date > date('Y-m-d 00:00:00') AND type_prize!=2");
+	$result = $wpdb->get_results ("SELECT selected_date, cell_number FROM `gameminer` WHERE cell_number between 1 and 25 AND selected_date > date('Y-m-d 00:00:00') AND type_prize!=2 AND user_id = $user_id");
 
 
 	$random = rand(1,100);
@@ -776,7 +782,7 @@ function myapi_pick_ceil( WP_REST_Request $request ) {
 
 	if ($rcount >=3) {
 		$return = array (
-			'message' => "YOU LOSER",
+			'message' => "Вы проиграли",
 			'type_prize' => 3
 		);
 		return wp_send_json( $return );
@@ -800,8 +806,8 @@ function myapi_pick_ceil( WP_REST_Request $request ) {
 	$table="INSERT INTO `gameminer` (`cell_number`, `user_id`, `selected_date`, `type_prize`) VALUES ('$cell_number', '$user_id', '$selected_date', '$type_prize')";
 	$wpdb->query( $table );
 	$return = array(
-		'message'   => $result,
 		'type_prize' => $type_prize,
+		'message'   => $result,
 	);
 
 	wp_send_json( $return );
